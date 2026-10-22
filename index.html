@@ -463,5 +463,24 @@ function sendWhatsApp(event){
  window.open('https://wa.me/50256496907?text='+encodeURIComponent(text),'_blank','noopener,noreferrer');
 }
 </script>
+
+<script>
+// Respaldo de las galerías: si una imagen no existe, mostrar otra foto de la misma carpeta.
+(() => {
+  const fotosDisponibles = [
+    'recuerdo-01.jpg','recuerdo-02.jpg','recuerdo-03.jpg',
+    'recuerdo-04.jpg','recuerdo-05.jpg','recuerdo-06.jpg',
+    'sobre-1.jpg','sobre-2.jpg','sobre-3.jpg','danna-principal.jpg'
+  ];
+  document.querySelectorAll('img[alt^="Recuerdo de Danna"]').forEach((img, index) => {
+    const alternativas = [img.getAttribute('src'), ...fotosDisponibles.slice(index % fotosDisponibles.length), ...fotosDisponibles].filter((x, i, a) => a.indexOf(x) === i);
+    let intento = 0;
+    img.addEventListener('error', () => {
+      intento++;
+      if (intento < alternativas.length) img.src = alternativas[intento];
+    });
+  });
+})();
+</script>
 </body>
 </html>
